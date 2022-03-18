@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""setup.py calls the DIalogflow API to setup a webhook sample"""
+"""setup.py calls the DIalogflow API to setup a webhook sample."""
 
 import argparse
 import time
