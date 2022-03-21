@@ -17,6 +17,7 @@ jobs:
           activate_credentials_file: true
           workload_identity_provider: projects/nicholascain-starter-project/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
           service_account: github-actions@nicholascain-starter-project.iam.gserviceaccount.com
+          audience: https://iam.googleapis.com/projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
     - id: gcloud
       name: gcloud
       run: |-
