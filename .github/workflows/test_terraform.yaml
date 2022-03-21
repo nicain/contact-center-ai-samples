@@ -19,10 +19,10 @@ jobs:
           audience: https://iam.googleapis.com/projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
     - id: gcloud
       name: gcloud
-      run: 
-        - gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
-        - gcloud config set project ${{ secrets.PROJECT_ID }}
-        - gcloud info
+      run: |-
+        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+        gcloud config set project ${{ secrets.PROJECT_ID }}
+        gcloud info
     # - name: 'Set up Cloud SDK'
     #   uses: 'google-github-actions/setup-gcloud@v0.6.0'
     # - name: Build & Publish
