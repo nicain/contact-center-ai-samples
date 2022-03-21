@@ -20,11 +20,12 @@ jobs:
     - id: gcloud
       name: gcloud
       run: |-
-        gcloud auth login --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
-        gcloud config set account github-actions@nicholascain-starter-project.iam.gserviceaccount.com
-        gcloud config set project ${{ secrets.PROJECT_ID }}
-        # gcloud info
+        gcloud auth activate-service-account --project=${{ secrets.PROJECT_ID }} --key-file="${{ steps.auth.outputs.credentials_file_path }}"
+        gcloud info
 
+        # gcloud config set account github-actions@nicholascain-starter-project.iam.gserviceaccount.com
+        # gcloud config set project ${{ secrets.PROJECT_ID }}
+        # gcloud auth login --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
     #   uses: 'google-github-actions/setup-gcloud@v0.6.0'
     # - name: 'Set up Cloud SDK'
     # - name: Build & Publish
