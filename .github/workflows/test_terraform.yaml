@@ -16,8 +16,7 @@ jobs:
           create_credentials_file: true
           workload_identity_provider: projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
           service_account: github-actions@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
-          audience: projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
-          # audience: https://iam.googleapis.com/projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
+          audience: https://iam.googleapis.com/projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
     - id: gcloud
       name: gcloud
       run: |-
