@@ -17,13 +17,10 @@ jobs:
           activate_credentials_file: true
           workload_identity_provider: projects/nicholascain-starter-project/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
           service_account: github-actions@nicholascain-starter-project.iam.gserviceaccount.com
-          audience: projects/nicholascain-starter-project/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
     - id: gcloud
       name: gcloud
       run: |-
         gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
-        gcloud config set project nicholascain-starter-project
-        gcloud services list
 # jobs:
 #   terraform:
 #     name: 'Terraform'
