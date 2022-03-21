@@ -23,7 +23,7 @@ jobs:
         gcloud auth login --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
         gcloud config set account github-actions@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
         gcloud auth list
-        # gcloud projects list
+        gcloud projects list
         # gcloud info
 
         # gcloud config set project ${{ secrets.PROJECT_ID }}
