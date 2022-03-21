@@ -22,7 +22,6 @@ jobs:
       name: 'gcloud'
       run: |-
         gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
-        gcloud auth login
         gcloud services list --project nicholascain-starter-project
 
 
