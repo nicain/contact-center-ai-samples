@@ -21,7 +21,8 @@ jobs:
       name: gcloud
       run: |-
         gcloud auth login --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
-        gcloud projects list
+        gcloud auth list
+        # gcloud projects list
         # gcloud info
 
         # gcloud config set account github-actions@nicholascain-starter-project.iam.gserviceaccount.com
