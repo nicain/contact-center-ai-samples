@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - actions_v2
+permissions:
+  id-token: write
 jobs:
   Get_OIDC_ID_token:
     runs-on: ubuntu-latest
