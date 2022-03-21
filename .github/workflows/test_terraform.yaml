@@ -4,12 +4,33 @@ on:
     branches:
       - actions_v2
 jobs:
-  terraform:
-    name: 'Terraform'
+  Get_OIDC_ID_token:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    - id: 'auth'
+      name: 'Authenticate to GCP'
+      uses: 'google-github-actions/auth@v0.3.1'
+      with:
+          create_credentials_file: 'true'
+          workload_identity_provider: projects/nicholascain-starter-project/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
+          service_account: 'github-actions@nicholascain-starter-project.iam.gserviceaccount.com'
+    - id: 'gcloud'
+      name: 'gcloud'
+      run: |-
+        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+        gcloud services list
+# jobs:
+#   terraform:
+#     name: 'Terraform'
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v2
+#     - name: Setup Terraform
+#       uses: hashicorp/setup-terraform@v1
+#       with:
+#         # terraform_version: 0.13.0
+#         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 # env:
 #   PROJECT_ID: ${{ secrets.GCP_ACTIONS_PROJECT_ID}}
 #   SERVICE: hello-cloud-run
