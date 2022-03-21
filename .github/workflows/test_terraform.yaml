@@ -16,6 +16,10 @@ jobs:
           create_credentials_file: true
           workload_identity_provider: projects/nicholascain-starter-project/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
           service_account: github-actions@nicholascain-starter-project.iam.gserviceaccount.com
+    - id: 'gcloud'
+      name: 'gcloud'
+      run: |-
+        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v0.6.0'
     - name: 'Use gcloud CLI'
