@@ -24,6 +24,9 @@ jobs:
       uses: 'google-github-actions/setup-gcloud@v0.6.0'
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
+    - name: Build & Publish
+      run: |
+        gcloud config set project ${{ secrets.PROJECT_ID }}
     # - id: gcloud
     #   name: gcloud
     #   run: |-
