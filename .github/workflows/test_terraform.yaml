@@ -15,17 +15,17 @@ jobs:
       with:
           create_credentials_file: true
           workload_identity_provider: projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
-          service_account: github-actions@nicholascain-starter-project.iam.gserviceaccount.com
+          service_account: github-actions@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
           audience: https://iam.googleapis.com/projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider
     - id: gcloud
       name: gcloud
       run: |-
         gcloud auth login --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+        gcloud config set account github-actions@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
         gcloud auth list
         # gcloud projects list
         # gcloud info
 
-        # gcloud config set account github-actions@nicholascain-starter-project.iam.gserviceaccount.com
         # gcloud config set project ${{ secrets.PROJECT_ID }}
     #   uses: 'google-github-actions/setup-gcloud@v0.6.0'
     # - name: 'Set up Cloud SDK'
