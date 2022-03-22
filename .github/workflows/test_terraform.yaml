@@ -18,6 +18,7 @@ jobs:
           create_credentials_file: 'true'
           workload_identity_provider: 'projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/actions-identity-provider-2'
           service_account: 'github-actions@nicholascain-starter-project.iam.gserviceaccount.com'
+          audience: https://iam.googleapis.com/projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/actions-identity-provider-2
     - id: 'gcloud'
       name: 'gcloud'
       run: |-
