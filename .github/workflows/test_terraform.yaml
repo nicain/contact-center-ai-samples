@@ -8,14 +8,37 @@ permissions:
   id-token: write
 
 jobs:
-  Get_OIDC_ID_token:
+  create_uuid:
     runs-on: ubuntu-latest
+    steps:
+      - name: Setup UUID
+        run: echo "::set-output name=id::$(date +%s)" > uuid.txt
+      - name: Upload UUID
+        uses: actions/upload-artifact@v1
+        with:
+          name: shared
+          path: uuid.txt
+
+  tests:
+    needs: [create_uuid]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9"]
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
         repository: nicain/contact-center-ai-samples
         token: ${{ secrets.ACCESS_TOKEN }}
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install requirements.txt
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r dialogflow-cx-webhook-python/requirements.txt
     - id: 'auth'
       name: 'Authenticate to GCP'
       uses: 'google-github-actions/auth@v0'
@@ -31,11 +54,52 @@ jobs:
         gcloud config set project nicholascain-starter-project
     - name: Authorize Docker push
       run: gcloud auth configure-docker
-    - name: Build and Push Container
+    - name: Build Terraform Container
       run: |-
-        pwd
-        ls
-    # - name: 'gcloud2'
+        cp "${{ steps.auth.outputs.credentials_file_path }}" docker/application_default_credentials.json
+        cp -r dialogflow-cx-webhook-python/webhook docker
+        docker build --tag ccai_terraform:dev -f ./docker/Dockerfile ./docker
+    - name: Dowload UUID
+      uses: actions/download-artifact@v1
+      with:
+        name: shared
+    - name: UUID to env
+      id: build_id
+      run: |-
+        echo `cat shared/uuid.txt`
+    - name: Terraform Init/Apply
+      run: |-
+        docker run --env GOOGLE_APPLICATION_CREDENTIALS=/app/application_default_credentials.json -w /app -v $(pwd)/docker:/app ccai_terraform:dev init
+        docker run --env GOOGLE_APPLICATION_CREDENTIALS=/app/application_default_credentials.json -w /app -v $(pwd)/docker:/app ccai_terraform:dev apply --auto-approve -var build_uuid=${BUILD_ID?}
+      env:
+        BUILD_ID: ${{ steps.build_id.outputs.id }}
+    - name: Run unit tests
+      run: |
+        python -m unittest discover dialogflow-cx-webhook-python -p '*_test.py'
+      env:
+        SVC_ACCOUNT_FILE: ${{ steps.auth.outputs.credentials_file_path }}
+        PROJECT_ID: ${{ secrets.PROJECT_ID }}
+        TEST_FUNCTION: webhook-test-${{ steps.build_id.outputs.id }}
+    - name: Terraform Destroy
+      if: always()
+      run: |-
+        docker run --env GOOGLE_APPLICATION_CREDENTIALS=/app/application_default_credentials.json -w /app -v $(pwd)/docker:/app ccai_terraform:dev destroy --auto-approve -var build_uuid=${BUILD_ID?}
+      env:
+        BUILD_ID: ${{ steps.build_id.outputs.id }}
+  read_uuid:
+    if: ${{ always() }}
+    needs: [tests, create_uuid]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dowload UUID
+      uses: actions/download-artifact@v1
+      with:
+        name: shared
+    - name: UUID to env
+      run: |-
+        echo `cat shared/uuid.txt`
+
+    # - name: 'gcloud2'  
     #   run: |-
     #     gcloud info
     #     # gcloud info --run-diagnostics
