@@ -16,7 +16,7 @@ jobs:
       uses: 'google-github-actions/auth@v0.3.1'
       with:
           create_credentials_file: 'true'
-          workload_identity_provider: 'projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/github-actions-identity-provider'
+          workload_identity_provider: 'projects/526597142092/locations/global/workloadIdentityPools/demo-pool/providers/actions-identity-provider-2'
           service_account: 'github-actions@$nicholascain-starter-project.iam.gserviceaccount.com'
     - id: 'gcloud'
       name: 'gcloud'
