@@ -24,6 +24,7 @@ jobs:
         gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
         gcloud auth list
         gcloud info
+        cat /home/runner/.config/gcloud/logs/*
         # gcloud config set project ${{ secrets.PROJECT_ID }}
         # gcloud services list --project nicholascain-starter-project
 # name: Terraform Test
