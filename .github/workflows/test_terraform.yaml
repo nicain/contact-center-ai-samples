@@ -21,7 +21,7 @@ jobs:
     - id: 'gcloud'
       name: 'gcloud'
       run: |-
-        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+        gcloud auth login --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
         gcloud --verbosity=debug config set project ${{ secrets.PROJECT_ID }}
         gcloud info --run-diagnostics
         gcloud info --show-log
