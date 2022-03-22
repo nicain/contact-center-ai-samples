@@ -23,6 +23,7 @@ jobs:
       run: |-
         gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
         gcloud info --run-diagnostics
+        gcloud info --show-log
         # gcloud config set project ${{ secrets.PROJECT_ID }}
         # gcloud auth list
         # gcloud info
