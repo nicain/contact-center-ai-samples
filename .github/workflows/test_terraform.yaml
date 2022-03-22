@@ -23,9 +23,9 @@ jobs:
       name: 'gcloud'
       run: |-
         gcloud auth login --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
-        gcloud --verbosity=debug config set project ${{ secrets.PROJECT_ID }}
-        gcloud info --run-diagnostics
-        gcloud info --show-log
+        gcloud config set project nicholascain-starter-project
+        # gcloud info --run-diagnostics
+        # gcloud info --show-log
         # gcloud auth list
         # gcloud info
         # cat /home/runner/.config/gcloud/logs/2022.03.22/*
