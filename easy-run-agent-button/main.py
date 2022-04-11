@@ -4,6 +4,14 @@ import uuid
 import google.auth
 _, project_id = google.auth.default()
 
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'Web App with Python Flask!'
+
 def create_agent():
     client = dialogflowcx_v3.AgentsClient()
 
@@ -48,4 +56,8 @@ def sample_restore_agent(agent_name):
     # Handle the response
     print(response)
 
+
 create_agent()
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=81)
