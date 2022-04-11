@@ -10,7 +10,7 @@
     "hooks": {
         "postcreate": {
             "commands": [
-                "gcloud beta run services delete test-app"
+                "gcloud beta run services delete test-app --region us-central1"
             ]
         }
     }
