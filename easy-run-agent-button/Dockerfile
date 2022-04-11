@@ -10,3 +10,5 @@ RUN pip install -r requirements.txt
 COPY . .
 
 CMD [ "python", "main.py"]
+
+RUN rm -rf ./contact-center-ai-samples
