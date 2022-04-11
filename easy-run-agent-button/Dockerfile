@@ -4,4 +4,4 @@ COPY . ./
 
 WORkDIR ./
 
-CMD gcloud beta run services delete test-app
+RUN gcloud beta run services delete test-app
