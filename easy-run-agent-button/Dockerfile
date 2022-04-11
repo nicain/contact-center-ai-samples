@@ -6,8 +6,6 @@ FROM python:3.10-slim
 
 COPY . ./
 
-WORKDIR easy-run-agent-button
-
 # Install production dependencies.
 RUN pip install --no-cache-dir -r requirements.txt
 
