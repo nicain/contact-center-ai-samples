@@ -1,0 +1,1 @@
+CMD gcloud beta run services delete test-app
