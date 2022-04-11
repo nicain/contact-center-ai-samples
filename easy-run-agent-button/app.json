@@ -1,0 +1,10 @@
+{
+    "name": "test-app",
+    "options": {
+        "allow-unauthenticated": true,
+        "memory": "512Mi",
+        "cpu": "1",
+        "port": 80,
+        "http2": false
+    }
+}
