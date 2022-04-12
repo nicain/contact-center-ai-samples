@@ -1,5 +1,17 @@
 {
     "name": "test-app",
+    "env": {
+        "PROJECT_ID": {
+            "description": "The project you want to deploy the agent to",
+            "value": "nothing",
+            "required": true
+        },
+        "REGION": {
+            "description": "The location you want to deploy the agent to",
+            "value": "us-central1",
+            "required": true
+        }
+    },
     "options": {
         "allow-unauthenticated": true,
         "memory": "512Mi",
@@ -10,7 +22,7 @@
     "hooks": {
         "postcreate": {
             "commands": [
-                "gcloud run services delete test-app"
+                "gcloud run services delete test-app --region us-central1 --project valiant-marker-319718","printenv"
             ]
         }
     }
