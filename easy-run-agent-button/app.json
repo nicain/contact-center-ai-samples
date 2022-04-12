@@ -11,7 +11,7 @@
         "postcreate": {
             "commands": [
                 "echo 'Your Dialogflow Agent is Deployed to:'",
-                "echo $AGENT_URL",
+                "echo $AGENT_URL","printenv",
                 "gcloud run services delete test-app --region $GOOGLE_CLOUD_REGION --project $GOOGLE_CLOUD_PROJECT --quiet"
             ]
         }
