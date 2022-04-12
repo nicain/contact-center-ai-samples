@@ -10,7 +10,6 @@
     "hooks": {
         "postcreate": {
             "commands": [
-                "printenv",
                 "gcloud run services delete agent-easy-deployment --region $GOOGLE_CLOUD_REGION --project $GOOGLE_CLOUD_PROJECT --quiet"
             ]
         }
