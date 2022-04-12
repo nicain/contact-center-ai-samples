@@ -1,17 +1,5 @@
 {
     "name": "test-app",
-    "env": {
-        "PROJECT_ID": {
-            "description": "The project you want to deploy the agent to",
-            "value": "nothing",
-            "required": true
-        },
-        "REGION": {
-            "description": "The location you want to deploy the agent to",
-            "value": "us-central1",
-            "required": true
-        }
-    },
     "options": {
         "allow-unauthenticated": true,
         "memory": "512Mi",
@@ -22,7 +10,7 @@
     "hooks": {
         "postcreate": {
             "commands": [
-                "gcloud run services delete test-app --region $REGION --project $PROJECT_ID --quiet","printenv"
+                "gcloud run services delete test-app --region $GOOGLE_CLOUD_REGION --project $GOOGLE_CLOUD_PROJECT --quiet"
             ]
         }
     }
