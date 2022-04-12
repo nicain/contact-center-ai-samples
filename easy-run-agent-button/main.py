@@ -62,4 +62,3 @@ create_agent()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=81)
-    os.system('gcloud run services delete test-app')
