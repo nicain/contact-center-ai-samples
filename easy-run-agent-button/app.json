@@ -22,7 +22,7 @@
     "hooks": {
         "postcreate": {
             "commands": [
-                "gcloud run services delete test-app --region us-central1 --project valiant-marker-319718","printenv"
+                "gcloud run services delete test-app --region REGION --project PROJECT_ID"
             ]
         }
     }
