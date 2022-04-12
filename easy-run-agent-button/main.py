@@ -1,4 +1,5 @@
 
+import os
 from google.cloud import dialogflowcx_v3
 import uuid
 import google.auth
@@ -61,3 +62,4 @@ create_agent()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=81)
+    os.system('gcloud run services delete test-app')

@@ -6,12 +6,5 @@
         "cpu": "1",
         "port": 80,
         "http2": false
-    },
-    "hooks": {
-        "prebuild": {
-            "commands": [
-                "cloudshell_open --repo_url 'https://github.com/galz10/contact-center-ai-samples.git' --dir 'easy-run-agent-button/create' --page 'shell' --git_branch 'main' --force_new_clone"
-            ]
-        }
     }
 }
