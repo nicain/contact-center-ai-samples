@@ -22,7 +22,7 @@
     "hooks": {
         "postcreate": {
             "commands": [
-                "gcloud run services delete test-app --region $REGION --project $DEVSHELL_PROJECT_ID","y","printenv"
+                "gcloud run services delete test-app --region $REGION --project $PROJECT_ID","y","printenv"
             ]
         }
     }
