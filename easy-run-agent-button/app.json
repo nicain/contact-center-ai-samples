@@ -10,9 +10,9 @@
     "hooks": {
         "postcreate": {
             "commands": [
-                "gcloud run services delete test-app --region $GOOGLE_CLOUD_REGION --project $GOOGLE_CLOUD_PROJECT --quiet",
                 "echo 'Your Dialogflow Agent is Deployed to:'",
-                "echo $AGENT_URL"
+                "echo $AGENT_URL",
+                "gcloud run services delete test-app --region $GOOGLE_CLOUD_REGION --project $GOOGLE_CLOUD_PROJECT --quiet"
             ]
         }
     }
