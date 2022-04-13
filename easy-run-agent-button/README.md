@@ -1,1 +1,1 @@
-[![Import Dialogflow Agent](.resources/button.svg)](https://deploy.cloud.run)
+[![Import Dialogflow Agent](./resources/button.svg)](https://deploy.cloud.run)
