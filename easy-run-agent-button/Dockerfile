@@ -6,7 +6,7 @@ FROM python:3.10-slim
 
 COPY . ./
 
-WORkDIR ./Deploy
+WORkDIR ./deploy
 
 # Install production dependencies.
 RUN pip install --no-cache-dir -r requirements.txt
