@@ -32,13 +32,6 @@ def create_agent():
 
     created_agent = client.create_agent(request=request)
     agent_name = created_agent.name
-    agent_split = agent.split('/')
-
-    agent_id = agent_split[5]
-
-    agent_url = f"https://dialogflow.cloud.google.com/cx/projects/{project_id}/locations/global/agents/{agent_id}/flows/00000000-0000-0000-0000-000000000000/flow_creation"
-
-    os.system(f"export AGENT_URL='{agent_url}'")
 
     print("Restoring Agent")
     sample_restore_agent(agent_name)
