@@ -9,12 +9,13 @@ from flask import Flask
 
 app = Flask(__name__)
 
+client = dialogflowcx_v3.AgentsClient()
+
 @app.route('/')
 def index():
     return 'Web App with Python Flask!'
 
 def create_agent():
-    client = dialogflowcx_v3.AgentsClient()
 
     location = "global"
 
@@ -32,37 +33,22 @@ def create_agent():
 
     created_agent = client.create_agent(request=request)
     agent_name = created_agent.name
-    agent_split = agent.split('/')
-
-    agent_id = agent_split[5]
-
-    agent_url = f"https://dialogflow.cloud.google.com/cx/projects/{project_id}/locations/global/agents/{agent_id}/flows/00000000-0000-0000-0000-000000000000/flow_creation"
-
-    print(f"export AGENT_URL='{agent_url}'")
 
     print("Restoring Agent")
     sample_restore_agent(agent_name)
 
 
 def sample_restore_agent(agent_name):
-    # Create a client
-    client = dialogflowcx_v3.AgentsClient()
 
     # Initialize request argument(s)
     request = dialogflowcx_v3.RestoreAgentRequest(
         agent_uri="gs://testingeasyagent/travel",
         name=agent_name,
+        restore_option="KEEP"
     )
 
     # Make the request
-    operation = client.restore_agent(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
-
-    # Handle the response
-    print(response)
+    client.restore_agent(request=request)
 
 
 create_agent()
