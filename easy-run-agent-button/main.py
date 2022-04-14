@@ -32,7 +32,7 @@ def create_agent():
 
     created_agent = client.create_agent(request=request)
     agent_name = created_agent.name
-    
+
     print(str(agent_name))
     print("Restoring Agent")
 
@@ -59,8 +59,6 @@ def sample_restore_agent(agent_name):
     # Handle the response
     print(response)
 
-
-create_agent()
-
 if __name__ == "__main__":
+    create_agent()
     app.run(host='0.0.0.0', port=81)
