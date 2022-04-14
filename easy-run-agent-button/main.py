@@ -43,7 +43,7 @@ def sample_restore_agent(agent_name):
 
     # Initialize request argument(s)
     request = dialogflowcx_v3.RestoreAgentRequest(
-        agent_uri="gs://testingeasyagent/agent1",
+        agent_uri="gs://testingeasyagent/travel",
         name=agent_name,
     )
 
