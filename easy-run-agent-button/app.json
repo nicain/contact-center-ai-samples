@@ -1,17 +1,3 @@
 {
-    "name": "agent-easy-deployment",
-    "options": {
-        "allow-unauthenticated": true,
-        "memory": "512Mi",
-        "cpu": "1",
-        "port": 80,
-        "http2": false
-    },
-    "hooks": {
-        "postcreate": {
-            "commands": [
-                "gcloud run services delete agent-easy-deployment --region $GOOGLE_CLOUD_REGION --project $GOOGLE_CLOUD_PROJECT --quiet"
-            ]
-        }
-    }
+    "name": "agent-easy-deployment"
 }
