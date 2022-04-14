@@ -21,26 +21,21 @@ def create_agent():
     agent = dialogflowcx_v3.Agent(
         display_name="sample-agent-" + str(uuid.uuid1()),
         default_language_code="en",
-        time_zone="America/Los_Angeles",
+        time_zone="America/Los_Angeles"
     )
 
     request = dialogflowcx_v3.CreateAgentRequest(
         parent=f"projects/{project_id}/locations/{location}",
-        agent=agent,)
+        agent=agent)
 
     print("Creating Agent")
 
     created_agent = client.create_agent(request=request)
     agent_name = created_agent.name
-    agent_split = str(agent_name).split('/')
-
-    agent_id = agent_split[5]
-
-    agent_url = f"https://dialogflow.cloud.google.com/cx/projects/{project_id}/locations/global/agents/{agent_id}/flows/00000000-0000-0000-0000-000000000000/flow_creation"
-
-    print(f"AGENT_URL='{agent_url}'")
-
+    
+    print(str(agent_name))
     print("Restoring Agent")
+
     sample_restore_agent(agent_name)
 
 
@@ -50,7 +45,7 @@ def sample_restore_agent(agent_name):
 
     # Initialize request argument(s)
     request = dialogflowcx_v3.RestoreAgentRequest(
-        agent_uri="gs://testingeasyagent/travel",
+        agent_uri="gs://agent-testing/travel",
         name=agent_name,
     )
 
