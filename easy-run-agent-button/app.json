@@ -6,5 +6,12 @@
         "cpu": "1",
         "port": 80,
         "http2": false
+    },
+    "hooks": {
+        "postcreate": {
+            "commands": [
+                "gcloud run services delete easy-agent-import --region $GOOGLE_CLOUD_REGION --project $GOOGLE_CLOUD_PROJECT --quiet"
+            ]
+        }
     }
 }

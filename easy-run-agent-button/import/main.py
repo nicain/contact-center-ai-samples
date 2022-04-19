@@ -41,10 +41,8 @@ def create_agent():
 def import_agent(agent_name):
 
     # Gets agent uri 
-    json_file = open("agent_uri.json")
-    loaded_json = json.loads(json_file)
-
-    print(loaded_json["agent_uri"])
+    with open('agent_uri.json','r') as f:
+        loaded_json = json.loads(f.read())
 
     # Create a client
     client = dialogflowcx_v3.AgentsClient()
@@ -65,8 +63,9 @@ def import_agent(agent_name):
     # Handle the response
     print(response)
 
-
 create_agent()
+
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80)
