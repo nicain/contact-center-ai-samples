@@ -6,10 +6,6 @@ with a single click.
 
 [![Import Dialogflow Agent](./resources/button.svg)](https://deploy.cloud.run)
 
-### Demo
-
-[![Import Dialogflow Agent Demo]]()
-
 ### Add the Import Dialogflow Agent Button to Your Repo
 
 1. Copy & paste this markdown:
@@ -30,9 +26,9 @@ The import folder and files will allow the cloud run instance to import the agen
 
 1. Authorize the cloud shell to make GCP API calls 
  
-1. select the project you have dialogflow enabled 
+1. Select the project Dialogflow CX is enabled on 
 
-1. select the location
+1. Select the location
 
 1. Now the import should be running depending on  the size of the agent it might take a couple minutes to import your agent
 
