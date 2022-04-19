@@ -3,11 +3,15 @@ import os
 from google.cloud import dialogflowcx_v3
 import uuid
 import google.auth
+import json
 _, project_id = google.auth.default()
 
 from flask import Flask
 
 app = Flask(__name__)
+
+json_file = open("agent_uri.json","r")
+agent_uri = json.loads(json_file)["agent_uri"]
 
 @app.route('/')
 def index():
@@ -43,7 +47,7 @@ def sample_restore_agent(agent_name):
 
     # Initialize request argument(s)
     request = dialogflowcx_v3.RestoreAgentRequest(
-        agent_uri="gs://testingeasyagent/travel",
+        agent_uri=agent_uri,
         name=agent_name,
     )
 
