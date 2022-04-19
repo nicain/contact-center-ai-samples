@@ -10,9 +10,6 @@ from flask import Flask
 
 app = Flask(__name__)
 
-json_file = open("agent_uri.json","r")
-loaded_json = json.loads(json_file)
-
 @app.route('/')
 def index():
     return 'Web App with Python Flask!'
@@ -37,13 +34,18 @@ def create_agent():
     created_agent = client.create_agent(request=request)
     agent_name = created_agent.name
 
+    print("Restoring Agent")
+    import_agent(agent_name)
+
+
+def import_agent(agent_name):
+
+    # Gets agent uri 
+    json_file = open("agent_uri.json")
+    loaded_json = json.loads(json_file)
+
     print(loaded_json["agent_uri"])
 
-    print("Restoring Agent")
-    sample_restore_agent(agent_name)
-
-
-def sample_restore_agent(agent_name):
     # Create a client
     client = dialogflowcx_v3.AgentsClient()
 
