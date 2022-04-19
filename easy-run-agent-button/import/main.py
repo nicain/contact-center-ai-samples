@@ -11,7 +11,7 @@ from flask import Flask
 app = Flask(__name__)
 
 json_file = open("agent_uri.json","r")
-agent_uri = json.loads(json_file)["agent_uri"]
+loaded_json = json.loads(json_file)
 
 @app.route('/')
 def index():
@@ -37,6 +37,8 @@ def create_agent():
     created_agent = client.create_agent(request=request)
     agent_name = created_agent.name
 
+    print(loaded_json["agent_uri"])
+
     print("Restoring Agent")
     sample_restore_agent(agent_name)
 
@@ -47,7 +49,7 @@ def sample_restore_agent(agent_name):
 
     # Initialize request argument(s)
     request = dialogflowcx_v3.RestoreAgentRequest(
-        agent_uri=agent_uri,
+        agent_uri=loaded_json["agent_uri"],
         name=agent_name,
     )
 
