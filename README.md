@@ -1,5 +1,7 @@
 # Google Cloud Contact Center AI Samples
 
+[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=http://path-to-repo/sample.git)
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 Welcome to the Google Cloud [Contact Center AI](https://cloud.google.com/solutions/contact-center) sample repository.
