@@ -12,7 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+variable "build_uuid" {
+  description = "Required uuid for a test build; links apply and destroy"
+  type        = string
+}
+
 variable "project_id" {
+  description = "Required uuid for a test build; links apply and destroy"
+  type        = string
+}
+
+variable "access_token" {
   description = "Required uuid for a test build; links apply and destroy"
   type        = string
 }
@@ -39,9 +49,21 @@ data "archive_file" "source" {
   output_path = local.archive_path
 }
 
+# resource "google_storage_bucket" "bucket" {
+#   name     = "ccai-samples-df-tf-2"
+#   location = "US"
+#   project = var.project_id
+# }
+
+provider "google" {
+  project     = var.project_id
+  region      = "us-central1"
+  access_token = var.access_token
+}
+
 resource "google_storage_bucket_object" "archive" {
   name   = "index.zip"
-  bucket = "ccai-samples-df-tf"
+  bucket = "ccai-samples-df-tf-2"
   source = data.archive_file.source.output_path
   depends_on = [data.archive_file.source]
 }
@@ -52,7 +74,7 @@ resource "google_cloudfunctions_function" "function" {
   description = "Basic webhook"
   runtime     = "python39"
   available_memory_mb   = 128
-  source_archive_bucket = "ccai-samples-df-tf"
+  source_archive_bucket = "ccai-samples-df-tf-2"
   source_archive_object = google_storage_bucket_object.archive.name
   trigger_http          = true
   timeout               = 60
@@ -67,5 +89,27 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
   region         = google_cloudfunctions_function.function.region
   cloud_function = google_cloudfunctions_function.function.name
   role   = "roles/cloudfunctions.invoker"
-  member = "serviceAccount:cloud-function-envoker@${google_cloudfunctions_function.function.project}.iam.gserviceaccount.com"
+  member = "serviceAccount:cf-envoker-${var.build_uuid}@${google_cloudfunctions_function.function.project}.iam.gserviceaccount.com"
+  depends_on = [google_service_account.function_envoker]
 }
+
+resource "google_service_account" "function_envoker" {
+  account_id   = "cf-envoker-${var.build_uuid}"
+  display_name = "cf-envoker-${var.build_uuid}"
+  project      = var.project_id
+}
+
+resource "google_project_iam_member" "df_admin" {
+  project = var.project_id
+  role    = "roles/dialogflow.admin"
+  member  = "serviceAccount:df-admin-${var.build_uuid}@${google_cloudfunctions_function.function.project}.iam.gserviceaccount.com"
+  depends_on = [google_service_account.dialogflow_admin]
+}
+
+resource "google_service_account" "dialogflow_admin" {
+  account_id   = "df-admin-${var.build_uuid}"
+  display_name = "df-admin-${var.build_uuid}"
+  project      = var.project_id
+}
+
+

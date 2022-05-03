@@ -1,0 +1,34 @@
+{
+    "name": "easy-agent-import",
+    "options": {
+        "allow-unauthenticated": true,
+        "memory": "512Mi",
+        "cpu": "1",
+        "port": 80,
+        "http2": false
+    },
+    "hooks": {
+        "prebuild": {
+            "commands": [
+                "gcloud services enable cloudfunctions.googleapis.com --project=${GOOGLE_CLOUD_PROJECT?}",
+                "gcloud services enable dialogflow.googleapis.com --project=${GOOGLE_CLOUD_PROJECT?}",
+                "gcloud services enable cloudbuild.googleapis.com --project=${GOOGLE_CLOUD_PROJECT?}",
+                "python3 -c \"import time; print(int(time.time()))\" > ${HOME?}/BUILD_UUID",
+                "gcloud auth application-default print-access-token > ${HOME?}/ACCESS_TOKEN",
+                "cd ${HOME?}/${APP_DIR?}/../dialogflow-cx && python3 -c \"from webhook.main import get_webhook_name; print(get_webhook_name($(<${HOME?}/BUILD_UUID)))\" > ${HOME?}/WEBHOOK_FUNCTION_NAME",
+                "cd ${HOME?}/${APP_DIR?}/../dialogflow-cx && python3 -c \"from webhook.main import get_webhook_entrypoint; print(get_webhook_entrypoint())\" > ${HOME?}/WEBHOOK_FUNCTION_ENTRYPOINT",
+                "echo $(<${HOME?}/BUILD_UUID)",
+                "echo $(<${HOME?}/WEBHOOK_FUNCTION_NAME)",
+                "echo $(<${HOME?}/WEBHOOK_FUNCTION_ENTRYPOINT)",
+                "cd ${HOME?} && cp -r contact-center-ai-samples/dialogflow-cx/webhook contact-center-ai-samples/dialogflow-cx/terraform/webhook",
+                "cd ${HOME?} && docker run -v $(pwd)/contact-center-ai-samples/dialogflow-cx/terraform:/app -w /app hashicorp/terraform:1.1.7 init",
+                "cd ${HOME?} && docker run -v $(pwd)/contact-center-ai-samples/dialogflow-cx/terraform:/app -w /app hashicorp/terraform:1.1.7 apply --auto-approve -var project_id=${GOOGLE_CLOUD_PROJECT?} -var webhook_function_name=$(<${HOME?}/WEBHOOK_FUNCTION_NAME) -var webhook_function_entrypoint=$(<${HOME?}/WEBHOOK_FUNCTION_ENTRYPOINT) -var access_token=$(<${HOME?}/ACCESS_TOKEN) -var build_uuid=$(<${HOME?}/BUILD_UUID)"
+            ]
+        },
+        "postcreate": {
+            "commands": [
+                "echo HelloWorld"
+            ]
+        }
+    }
+}

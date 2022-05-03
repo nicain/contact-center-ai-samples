@@ -15,6 +15,7 @@
 """Module for creating and organizing GCP project credentials."""
 
 import dataclasses
+from typing import Optional
 import json
 import os
 
@@ -25,9 +26,19 @@ from google.auth import identity_pool
 from google.oauth2 import service_account
 
 
-def get_credentials(quota_project_id=None):
+from google.oauth2 import credentials as oauth_credentials
+
+
+
+def get_credentials(quota_project_id=None, auth_token=None):
     """Obtain credentials object from json file and environment configuration."""
     credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+
+    # if not credentials_path:
+    #     return oauth_credentials.Credentials(token=auth_token)
+
+
+
     with open(credentials_path, "r", encoding="utf8") as file_handle:
         credentials_data = file_handle.read()
         credentials_dict = json.loads(credentials_data)
@@ -49,11 +60,12 @@ class AuthDelegator:
     project_id: str
     quota_project_id: None
     location: str = "global"
+    auth_token: Optional[str] = None
 
     @property
     def credentials(self):
         """Access cached credentials."""
         if not self.controller.credentials:
-            credentials = get_credentials(quota_project_id=self.quota_project_id)
+            credentials = get_credentials(quota_project_id=self.quota_project_id, auth_token=self.auth_token)
             self.controller.set_credentials(credentials)
         return self.controller.credentials
