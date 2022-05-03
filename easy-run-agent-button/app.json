@@ -8,8 +8,14 @@
         "http2": false
     },
     "hooks": {
+        "prebuild": {
+            "commands": [
+                "export ACCESS_TOKEN=$(gcloud auth application-default print-access-token) && echo ${ACCESS_TOKEN?}"
+            ]
+        },
         "postcreate": {
             "commands": [
+                "echo HELLO WORLD",
                 "gcloud run services delete easy-agent-import --region $GOOGLE_CLOUD_REGION --project $GOOGLE_CLOUD_PROJECT --quiet"
             ]
         }
