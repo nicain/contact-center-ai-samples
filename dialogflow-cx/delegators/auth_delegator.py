@@ -30,14 +30,9 @@ from google.oauth2 import credentials as oauth_credentials
 
 
 
-def get_credentials(quota_project_id=None, auth_token=None):
+def get_credentials(quota_project_id=None):
     """Obtain credentials object from json file and environment configuration."""
     credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
-
-    # if not credentials_path:
-    #     return oauth_credentials.Credentials(token=auth_token)
-
-
 
     with open(credentials_path, "r", encoding="utf8") as file_handle:
         credentials_data = file_handle.read()
@@ -60,12 +55,16 @@ class AuthDelegator:
     project_id: str
     quota_project_id: None
     location: str = "global"
-    auth_token: Optional[str] = None
+    use_implicit_credentials: bool = True
 
     @property
     def credentials(self):
         """Access cached credentials."""
+
+        if self.use_implicit_credentials:
+            return None
+
         if not self.controller.credentials:
-            credentials = get_credentials(quota_project_id=self.quota_project_id, auth_token=self.auth_token)
+            credentials = get_credentials(quota_project_id=self.quota_project_id)
             self.controller.set_credentials(credentials)
         return self.controller.credentials

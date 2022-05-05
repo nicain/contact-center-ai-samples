@@ -41,7 +41,7 @@ class SetSessionParamSample(ds.DialogflowSample):
         quota_project_id=None,
         webhook_uri=None,
         agent_display_name=None,
-        auth_token=None,
+        use_implicit_credentials=False
     ):
         super().__init__()
         if not quota_project_id:
@@ -51,7 +51,7 @@ class SetSessionParamSample(ds.DialogflowSample):
                 self,
                 project_id=project_id,
                 quota_project_id=quota_project_id,
-                auth_token=auth_token,
+                use_implicit_credentials=use_implicit_credentials,
             )
         )
         self.set_agent_delegator(
@@ -156,13 +156,10 @@ if __name__ == "__main__":
         default=[],
     )
     parser.add_argument(
-        "--auth-token", 
-        help="auth token from gcloud auth application-default print-access-token",
-        required=False,
-        default=None,
+        "--tear-down", action="store_true", help="Destroy the agent after run?"
     )
     parser.add_argument(
-        "--tear-down", action="store_true", help="Destroy the agent after run?"
+        "--use-implicit-credentials", action="store_true", help="Destroy the agent after run?"
     )
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument(
