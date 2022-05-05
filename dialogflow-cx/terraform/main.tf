@@ -49,11 +49,11 @@ data "archive_file" "source" {
   output_path = local.archive_path
 }
 
-# resource "google_storage_bucket" "bucket" {
-#   name     = "ccai-samples-df-tf-2"
-#   location = "US"
-#   project = var.project_id
-# }
+resource "google_storage_bucket" "bucket" {
+  name     = "df-${var.build_uuid}"
+  location = "US"
+  project = var.project_id
+}
 
 provider "google" {
   project     = var.project_id
@@ -63,7 +63,7 @@ provider "google" {
 
 resource "google_storage_bucket_object" "archive" {
   name   = "index.zip"
-  bucket = "ccai-samples-df-tf-2"
+  bucket = google_storage_bucket.bucket.name
   source = data.archive_file.source.output_path
   depends_on = [data.archive_file.source]
 }
@@ -74,7 +74,7 @@ resource "google_cloudfunctions_function" "function" {
   description = "Basic webhook"
   runtime     = "python39"
   available_memory_mb   = 128
-  source_archive_bucket = "ccai-samples-df-tf-2"
+  source_archive_bucket = google_storage_bucket.bucket.name
   source_archive_object = google_storage_bucket_object.archive.name
   trigger_http          = true
   timeout               = 60
