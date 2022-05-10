@@ -6,6 +6,7 @@ import uuid
 import google.auth
 import json
 _, project_id = google.auth.default()
+# project_id = "dialogflow-cx-demo-1-348717"
 
 from flask import Flask, render_template
 
@@ -26,17 +27,28 @@ if os.environ.get('ENV', 'prod') == 'prod':
     sample.setup()
     _AGENT_LOC = sample.start_flow_delegator.flow.name
     _WEBHOOK_LOC = sample.webhook_delegator.webhook.generic_web_service.uri.split('/')[-1]
+    _PROJECT_ID = sample.project_id
+    _AGENT_NAME = '/'.join(_AGENT_LOC.split('/')[:-2])
 else:
     _AGENT_LOC = 'FOO'
     _WEBHOOK_LOC = 'BAR'
+    _PROJECT_ID = 'BAZ'
+    _AGENT_NAME = 'BOC'
 
 @app.route('/')
 def index():
     # agent_url = f"https://dialogflow.cloud.google.com/cx/{sample.start_flow_delegator.flow.name}"
     # webhook_url = f"https://console.cloud.google.com/functions/details/us-central1/{sample.webhook_delegator.webhook.generic_web_service.uri.split('/')[-1]}?project={sample.project_id}"
     agent_url = f"https://dialogflow.cloud.google.com/cx/{_AGENT_LOC}"
-    webhook_url = f"https://console.cloud.google.com/functions/details/us-central1/{_WEBHOOK_LOC}?project={project_id}"
-    return render_template('index.html', agent_url=agent_url, webhook_url=webhook_url)
+    webhook_url = f"https://console.cloud.google.com/functions/details/us-central1/{_WEBHOOK_LOC}?project={_PROJECT_ID}"
+    agent_id = agent_url.split('/')[-3]
+    return render_template(
+        'index.html', 
+        agent_url=agent_url, 
+        webhook_url=webhook_url, 
+        agent_id=agent_id, 
+        project_id=_PROJECT_ID,
+        agent_name=_AGENT_NAME)
 
 def create_agent():
     client = dialogflowcx_v3.AgentsClient()
