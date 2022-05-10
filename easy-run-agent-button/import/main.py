@@ -5,11 +5,24 @@ from google.cloud import dialogflowcx_v3
 import uuid
 import google.auth
 import json
+import logging
+import os
+import python_terraform as pt
+
+logger = logging.getLogger(__name__)
+
+import google.cloud.logging
+client = google.cloud.logging.Client()
+client.setup_logging()
 _, project_id = google.auth.default()
+use_implicit_credentials = True
+
 # project_id = "dialogflow-cx-demo-1-348717"
+# use_implicit_credentials = False
 
 from flask import Flask, render_template
 
+logger.info('STARTUP')
 app = Flask(__name__)
 
 from set_session_param_sample import SetSessionParamSample
@@ -19,7 +32,7 @@ with open('/import/WEBHOOK_URI', 'r') as file_handle:
 
 if os.environ.get('ENV', 'prod') == 'prod':
     sample = SetSessionParamSample(
-        use_implicit_credentials=True,
+        use_implicit_credentials=use_implicit_credentials,
         project_id=project_id,
         agent_display_name=f'sample-agent-{int(time.time())}',
         webhook_uri=webhook_uri,
@@ -35,8 +48,16 @@ else:
     _PROJECT_ID = 'BAZ'
     _AGENT_NAME = 'BOC'
 
+@app.route('/destroy')
+def destroy():
+    tf = pt.Terraform(working_dir=os.getcwd()+"/dialogflow-cx/terraform")#, variables={'a':'b', 'c':'d'})
+    return str(tf.init())
+
 @app.route('/')
 def index():
+    tmp = f'CWD: {os.listdir(os.getcwd()+"/dialogflow-cx/terraform")}'
+    logger.info(tmp)
+    print(tmp)
     # agent_url = f"https://dialogflow.cloud.google.com/cx/{sample.start_flow_delegator.flow.name}"
     # webhook_url = f"https://console.cloud.google.com/functions/details/us-central1/{sample.webhook_delegator.webhook.generic_web_service.uri.split('/')[-1]}?project={sample.project_id}"
     agent_url = f"https://dialogflow.cloud.google.com/cx/{_AGENT_LOC}"
@@ -104,4 +125,6 @@ def import_agent(agent_name):
 
 
 if __name__ == "__main__":
+    logger.info('PRE-RUN')
     app.run(host='0.0.0.0', port=80)
+    logger.info('POST-RUN')
