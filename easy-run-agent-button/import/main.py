@@ -20,7 +20,7 @@ use_implicit_credentials = True
 # project_id = "dialogflow-cx-demo-1-348717"
 # use_implicit_credentials = False
 
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 
 logger.info('STARTUP')
 app = Flask(__name__)
@@ -50,26 +50,32 @@ else:
 
 @app.route('/destroy')
 def destroy():
-    tf = pt.Terraform(working_dir=os.getcwd()+"/dialogflow-cx/terraform")#, variables={'a':'b', 'c':'d'})
-    return str(tf.init())
+    tf = pt.Terraform(working_dir=os.getcwd()+"/dialogflow-cx/terraform")
+    tf.init()
+    result = tf.apply(destroy=True, variables={'project_id':'dialogflow-cx-demo-3'}, skip_plan=True)
+    return str(result)
+    # tmp = f'CWD: {os.listdir(os.getcwd()+"/dialogflow-cx/terraform")}'
+    # logger.info(tmp)
+    # print(tmp)
+    # return tmp
 
 @app.route('/')
 def index():
     tmp = f'CWD: {os.listdir(os.getcwd()+"/dialogflow-cx/terraform")}'
     logger.info(tmp)
-    print(tmp)
-    # agent_url = f"https://dialogflow.cloud.google.com/cx/{sample.start_flow_delegator.flow.name}"
-    # webhook_url = f"https://console.cloud.google.com/functions/details/us-central1/{sample.webhook_delegator.webhook.generic_web_service.uri.split('/')[-1]}?project={sample.project_id}"
     agent_url = f"https://dialogflow.cloud.google.com/cx/{_AGENT_LOC}"
     webhook_url = f"https://console.cloud.google.com/functions/details/us-central1/{_WEBHOOK_LOC}?project={_PROJECT_ID}"
     agent_id = agent_url.split('/')[-3]
+    destroy_url = url_for('destroy')
     return render_template(
         'index.html', 
         agent_url=agent_url, 
         webhook_url=webhook_url, 
         agent_id=agent_id, 
         project_id=_PROJECT_ID,
-        agent_name=_AGENT_NAME)
+        agent_name=_AGENT_NAME,
+        destroy_url=destroy_url,
+    )
 
 def create_agent():
     client = dialogflowcx_v3.AgentsClient()

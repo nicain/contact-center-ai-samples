@@ -17,14 +17,23 @@ variable "build_uuid" {
   type        = string
 }
 
+output "build_uuid" {
+  value = var.build_uuid
+}
+
 variable "project_id" {
   description = "Required uuid for a test build; links apply and destroy"
   type        = string
 }
 
+output "project_id" {
+  value = var.project_id
+}
+
 variable "access_token" {
   description = "Required uuid for a test build; links apply and destroy"
   type        = string
+  default = null
 }
 
 variable "webhook_function_name" {
@@ -32,9 +41,17 @@ variable "webhook_function_name" {
   type        = string
 }
 
+output "webhook_function_name" {
+  value = var.webhook_function_name
+}
+
 variable "webhook_function_entrypoint" {
   description = "Name of webhook function"
   type        = string
+}
+
+output "webhook_function_entrypoint" {
+  value = var.webhook_function_entrypoint
 }
 
 locals {
@@ -111,5 +128,3 @@ resource "google_service_account" "dialogflow_admin" {
   display_name = "df-admin-${var.build_uuid}"
   project      = var.project_id
 }
-
-
