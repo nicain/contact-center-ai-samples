@@ -73,6 +73,6 @@ jobs:
           PYTHON_BLACK_CONFIG_FILE: pyproject.toml
           PYTHON_ISORT_CONFIG_FILE: pyproject.toml
           JSCPD_CONFIG_FILE: .jscpd.json
-          FILTER_REGEX_EXCLUDE: noxfile.py
           PYTHON_FLAKE8_CONFIG_FILE: .flake8
           VALIDATE_GITHUB_ACTIONS: false
+          TERRAFORM_TFLINT_CONFIG_FILE: .tflint.hcl
